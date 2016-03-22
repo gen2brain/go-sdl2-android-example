@@ -2,7 +2,7 @@
 
 ANDROID_TOOLCHAIN="/opt/android-toolchain-arm"
 
-export PATH=/opt/android-toolchain-arm/bin:${PATH}
+export PATH=$ANDROID_TOOLCHAIN/bin:${PATH}
 export CC=arm-linux-androideabi-gcc
 export CXX=arm-linux-androideabi-g++
 export PKG_CONFIG_PATH=$ANDROID_TOOLCHAIN/lib/pkgconfig
