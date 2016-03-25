@@ -34,10 +34,11 @@ GOROOT_BOOTSTRAP=${BUILD_DIR}/bootstrap/go CC=arm-linux-androideabi-gcc CC_FOR_T
 cp -r -f ${BUILD_DIR}/go ${INSTALL_PREFIX}
 
 echo "Compile SDL2"
-LIBS="SDL SDL_image SDL_mixer SDL_ttf"
+
+mkdir -p ${BUILD_DIR}/jni
 
 # Clone repo
-mkdir -p ${BUILD_DIR}/jni
+LIBS="SDL SDL_image SDL_mixer SDL_ttf"
 for lib in ${LIBS}; do
     hg clone http://hg.libsdl.org/${lib} ${BUILD_DIR}/jni/${lib}
 done

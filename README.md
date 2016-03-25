@@ -32,6 +32,6 @@ After build is complete you must first compile example to shared library, GOROOT
 And to build apk:
 
     cd android
-    ANDROID_NDK=/opt/android-ndk ANDROID_NDK=/opt/android-sdk ./make.bash
+    ANDROID_NDK=/opt/android-ndk ANDROID_SDK=/opt/android-sdk ./make.bash
 
 If everything is successfully built apk can be found in android/bin directory.
