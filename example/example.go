@@ -121,7 +121,7 @@ func (e *Engine) Quit() {
 	e.running = false
 }
 
-// Check if loop is running
+// Checks if loop is running
 func (e *Engine) Running() bool {
 	return e.running
 }
@@ -159,22 +159,22 @@ func (e *Engine) Load() {
 
 	err := e.LoadSprite(filepath.Join(assetDir, "images", "sprite.png"))
 	if err != nil {
-		sdl.LogError(sdl.LOG_CATEGORY_ERROR, "Error LoadTexture: %s\n", err)
+		sdl.LogError(sdl.LOG_CATEGORY_APPLICATION, "LoadSprite: %s\n", err)
 	}
 
 	err = e.LoadFont(filepath.Join(assetDir, "fonts", "universalfruitcake.ttf"), 24)
 	if err != nil {
-		sdl.LogError(sdl.LOG_CATEGORY_ERROR, "Error LoadTexture: %s\n", err)
+		sdl.LogError(sdl.LOG_CATEGORY_APPLICATION, "LoadTexture: %s\n", err)
 	}
 
 	err = e.LoadMusic(filepath.Join(assetDir, "music", "frantic-gameplay.ogg"))
 	if err != nil {
-		sdl.LogError(sdl.LOG_CATEGORY_ERROR, "Error LoadMusic: %s\n", err)
+		sdl.LogError(sdl.LOG_CATEGORY_APPLICATION, "LoadMusic: %s\n", err)
 	}
 
 	err = e.LoadSound(filepath.Join(assetDir, "sounds", "click.wav"))
 	if err != nil {
-		sdl.LogError(sdl.LOG_CATEGORY_ERROR, "Error LoadSound: %s\n", err)
+		sdl.LogError(sdl.LOG_CATEGORY_APPLICATION, "LoadSound: %s\n", err)
 	}
 
 	e.StateText = map[int]*Text{}
@@ -204,7 +204,7 @@ func run() {
 	// Initialize SDL
 	err := e.Init()
 	if err != nil {
-		sdl.LogError(sdl.LOG_CATEGORY_ERROR, "Error Init: %s\n", err)
+		sdl.LogError(sdl.LOG_CATEGORY_APPLICATION, "Init: %s\n", err)
 	}
 	defer e.Destroy()
 
