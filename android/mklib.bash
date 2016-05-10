@@ -37,7 +37,7 @@ case "$1" in
     export PATH=$ANDROID_TOOLCHAIN_ARM64/bin:${PATH}
 
     export CC=aarch64-linux-android-gcc
-    export CXX=aarch64-linux-android-gcc
+    export CXX=aarch64-linux-android-g++
     export PKG_CONFIG_PATH=$ANDROID_TOOLCHAIN_ARM64/lib/pkgconfig
     export PKG_CONFIG_LIBDIR=$ANDROID_TOOLCHAIN_ARM64/lib/pkgconfig
 
@@ -58,7 +58,7 @@ case "$1" in
     export PATH=$ANDROID_TOOLCHAIN_X86/bin:${PATH}
 
     export CC=i686-linux-android-gcc
-    export CXX=i686-linux-android-gcc
+    export CXX=i686-linux-android-g++
     export PKG_CONFIG_PATH=$ANDROID_TOOLCHAIN_X86/lib/pkgconfig
     export PKG_CONFIG_LIBDIR=$ANDROID_TOOLCHAIN_X86/lib/pkgconfig
 
@@ -79,7 +79,7 @@ case "$1" in
     export PATH=$ANDROID_TOOLCHAIN_X86_64/bin:${PATH}
 
     export CC=x86_64-linux-android-gcc
-    export CXX=x86_64-linux-android-gcc
+    export CXX=x86_64-linux-android-g++
     export PKG_CONFIG_PATH=$ANDROID_TOOLCHAIN_X86_64/lib/pkgconfig
     export PKG_CONFIG_LIBDIR=$ANDROID_TOOLCHAIN_X86_64/lib/pkgconfig
 
