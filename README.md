@@ -17,21 +17,32 @@ Compile
 
 To compile example you will need [Android NDK](https://developer.android.com/ndk/downloads/index.html) and [Android SDK](http://developer.android.com/sdk/index.html#Other) , download and unpack archives somewhere.
 
-Go toolchain must be cross compiled for android/arm. There is a bootstrap script you can use to compile toolchain and SDL2.
+Go toolchain must be cross compiled for android. There is a bootstrap script in android dir that you can use to compile toolchains and SDL2 for arm, arm64, x86 and x86_64.
+
 Make sure you have mercurial/hg, curl and ant installed.
 
-    ANDROID_NDK=/opt/android-ndk ./bootstrap.bash /usr/local
-
-Point ANDROID_NDK to directory where you unpacked archive, /usr/local is prefix where Go and android toolchains will be installed.
-
-After build is complete you must first compile example to shared library, GOROOT needs to point to toolchain that we compiled for android:
-
-    cd example
-    ANDROID_TOOLCHAIN=/usr/local/android-toolchain-arm GOROOT=/usr/local/go ./make.bash
-
-And to build apk:
+    export ANDROID_NDK=/opt/android-ndk
+    export ANDROID_SDK=/opt/android-sdk
 
     cd android
-    ANDROID_NDK=/opt/android-ndk ANDROID_SDK=/opt/android-sdk ./make.bash
+    ./bootstrap.bash /usr/local
+
+/usr/local is prefix where Go and Android toolchains will be installed.
+
+After build is complete point GOROOT to new Go installation in /usr/local:
+
+    export GOROOT=/usr/local/go
+
+And export directories to android toolchains, so scripts can find them:
+
+    export ANDROID_TOOLCHAIN_ARM=/usr/local/android-toolchain-arm
+    export ANDROID_TOOLCHAIN_ARM64=/usr/local/android-toolchain-arm64
+    export ANDROID_TOOLCHAIN_X86=/usr/local/android-toolchain-x86
+    export ANDROID_TOOLCHAIN_X86_64=/usr/local/android-toolchain-x86_64
+
+To build apk:
+
+    cd android
+    ./mkapk.bash
 
 If everything is successfully built apk can be found in android/bin directory.

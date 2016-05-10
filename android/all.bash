@@ -1,16 +1,11 @@
 #!/usr/bin/env bash
 
-if [ -z "$ANDROID_NDK" ]; then
-  echo "You must define ANDROID_NDK before starting. It must point to your NDK directories."
-  exit 1
-fi
-
 if [ -z "$ANDROID_SDK" ]; then
-  echo "You must define ANDROID_SDK before starting. It must point to your SDK directories."
+  echo "You must define ANDROID_SDK before starting. It should point to your SDK directories."
   exit 1
 fi
 
-./make.bash
+./mkapk.bash debug || exit 1
 
 ${ANDROID_SDK}/platform-tools/adb install -r bin/go-sdl2-example-debug.apk
 
