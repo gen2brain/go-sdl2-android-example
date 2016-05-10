@@ -51,7 +51,7 @@ case "$1" in
     x86)
 
     if [ -z "$ANDROID_TOOLCHAIN_X86" ]; then
-      echo "You must define ANDROID_TOOLCHAIN_ARM64 before starting. It should point to directory where you have installed x86 toolchain."
+      echo "You must define ANDROID_TOOLCHAIN_X86 before starting. It should point to directory where you have installed x86 toolchain."
       exit 1
     fi
 
@@ -72,7 +72,7 @@ case "$1" in
     x86_64)
 
     if [ -z "$ANDROID_TOOLCHAIN_X86_64" ]; then
-      echo "You must define ANDROID_TOOLCHAIN_ARM64 before starting. It should point to directory where you have installed x86 toolchain."
+      echo "You must define ANDROID_TOOLCHAIN_X86_64 before starting. It should point to directory where you have installed x86_64 toolchain."
       exit 1
     fi
 
