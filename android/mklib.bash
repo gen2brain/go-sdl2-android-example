@@ -5,6 +5,14 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
+if [ -z "$USE_LLVM" ]; then
+    MYCC=gcc
+    MYCXX=g++
+else
+    MYCC=clang
+    MYCXX=clang++
+fi
+
 case "$1" in 
     arm)
 
@@ -15,8 +23,8 @@ case "$1" in
 
     export PATH=$ANDROID_TOOLCHAIN_ARM/bin:${PATH}
 
-    export CC=arm-linux-androideabi-gcc
-    export CXX=arm-linux-androideabi-g++
+    export CC=arm-linux-androideabi-${MYCC}
+    export CXX=arm-linux-androideabi-${MYCXX}
     export PKG_CONFIG_PATH=$ANDROID_TOOLCHAIN_ARM/lib/pkgconfig
     export PKG_CONFIG_LIBDIR=$ANDROID_TOOLCHAIN_ARM/lib/pkgconfig
 
@@ -36,8 +44,8 @@ case "$1" in
 
     export PATH=$ANDROID_TOOLCHAIN_ARM64/bin:${PATH}
 
-    export CC=aarch64-linux-android-gcc
-    export CXX=aarch64-linux-android-g++
+    export CC=aarch64-linux-android-${MYCC}
+    export CXX=aarch64-linux-android-${MYCXX}
     export PKG_CONFIG_PATH=$ANDROID_TOOLCHAIN_ARM64/lib/pkgconfig
     export PKG_CONFIG_LIBDIR=$ANDROID_TOOLCHAIN_ARM64/lib/pkgconfig
 
@@ -57,8 +65,8 @@ case "$1" in
 
     export PATH=$ANDROID_TOOLCHAIN_X86/bin:${PATH}
 
-    export CC=i686-linux-android-gcc
-    export CXX=i686-linux-android-g++
+    export CC=i686-linux-android-${MYCC}
+    export CXX=i686-linux-android-${MYCXX}
     export PKG_CONFIG_PATH=$ANDROID_TOOLCHAIN_X86/lib/pkgconfig
     export PKG_CONFIG_LIBDIR=$ANDROID_TOOLCHAIN_X86/lib/pkgconfig
 
@@ -78,8 +86,8 @@ case "$1" in
 
     export PATH=$ANDROID_TOOLCHAIN_X86_64/bin:${PATH}
 
-    export CC=x86_64-linux-android-gcc
-    export CXX=x86_64-linux-android-g++
+    export CC=x86_64-linux-android-${MYCC}
+    export CXX=x86_64-linux-android-${MYCXX}
     export PKG_CONFIG_PATH=$ANDROID_TOOLCHAIN_X86_64/lib/pkgconfig
     export PKG_CONFIG_LIBDIR=$ANDROID_TOOLCHAIN_X86_64/lib/pkgconfig
 

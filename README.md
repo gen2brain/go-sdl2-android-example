@@ -19,10 +19,18 @@ To compile example you will need [Android NDK](https://developer.android.com/ndk
 
 Go toolchain must be cross compiled for android. There is a bootstrap script in android dir that you can use to compile toolchains and SDL2 for arm, arm64, x86 and x86_64.
 
-Make sure you have mercurial/hg, curl and ant installed.
+Make sure you have git, mercurial/hg, curl and ant installed.
+
+Export paths to Android NDK and SDK:
 
     export ANDROID_NDK=/opt/android-ndk
     export ANDROID_SDK=/opt/android-sdk
+
+If you want to use clang instead of gcc:
+    
+    export USE_LLVM=1
+
+Bootstrap Go and SDL:
 
     cd android
     ./bootstrap.bash /usr/local
@@ -33,7 +41,7 @@ After build is complete point GOROOT to new Go installation in /usr/local:
 
     export GOROOT=/usr/local/go
 
-And export directories to android toolchains, so scripts can find them:
+And export paths to android toolchains, so scripts can find them:
 
     export ANDROID_TOOLCHAIN_ARM=/usr/local/android-toolchain-arm
     export ANDROID_TOOLCHAIN_ARM64=/usr/local/android-toolchain-arm64
