@@ -11,23 +11,22 @@ if [ -z "$ANDROID_SDK" ]; then
 fi
 
 if [ -z "$1" ]; then
-  echo "Usage: mkapk.bash [release|debug]"
+  echo "Usage: mkapk-ant.bash [release|debug]"
   exit 1
 fi
 
 echo "sdk.dir=${ANDROID_SDK}" > local.properties
+echo "ndk.dir=${ANDROID_NDK}" >> local.properties
 
-if [ ! -d "jni/SDL2" ]; then
-    hg clone http://hg.libsdl.org/SDL jni/SDL2
-    hg clone http://hg.libsdl.org/SDL_image jni/SDL2_image
-    hg clone http://hg.libsdl.org/SDL_mixer jni/SDL2_mixer
-    hg clone http://hg.libsdl.org/SDL_ttf jni/SDL2_ttf
+if [ -n "$USE_LLVM" ]; then
+    grep -q "NDK_TOOLCHAIN_VERSION" jni/Application.mk || echo "NDK_TOOLCHAIN_VERSION := clang" >> jni/Application.mk
 fi
 
-./mklib.bash arm || exit 1
-./mklib.bash arm64 || exit 1
-./mklib.bash x86 || exit 1
-./mklib.bash x86_64 || exit 1
+if [ ! -d "jni/SDL2" ]; then
+    ./clone.bash
+fi
+
+./mklib.bash arm arm64 x86 x86_64 || exit 1
 
 if [ $1 == "release" ]; then
     ${ANDROID_NDK}/ndk-build V=1 -j$(nproc) && ant clean release

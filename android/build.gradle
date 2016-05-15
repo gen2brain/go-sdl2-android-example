@@ -1,0 +1,100 @@
+apply plugin: 'com.android.model.application'
+
+model {
+    android {
+        compileSdkVersion = 23
+        buildToolsVersion = '23.0.3'
+
+        defaultConfig {
+            applicationId = 'com.example.android'
+                minSdkVersion.apiLevel = 10
+                targetSdkVersion.apiLevel = 23
+                versionCode 15
+                versionName "1.0.0"
+        }
+
+        ndk {
+            moduleName = 'main'
+        }
+
+        buildTypes {
+            release {
+                minifyEnabled = false
+            }
+        }
+
+        sources {
+            main {
+                java {
+                    source {
+                        srcDir 'java'
+                    }
+                }
+
+                resources {
+                    source {
+                        srcDir 'java'
+                    }
+                }
+
+                aidl {
+                    source {
+                        srcDir 'java'
+                    }
+                }
+
+                renderscript {
+                    source {
+                        srcDir 'java'
+                    }
+                }
+
+                jniLibs {
+                    source {
+                        srcDir 'libs'
+                    }
+                }
+
+                res {
+                    source {
+                        srcDir 'res'
+                    }
+                }
+
+                assets {
+                    source {
+                        srcDir 'assets'
+                    }
+                }
+
+                manifest {
+                    source {
+                        srcDir '.'
+                        include 'AndroidManifest.xml'
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+task ndkBuild(type: Exec) {
+    commandLine 'ndk-build', 'V=1', '-C', file('.').absolutePath
+}
+
+tasks.all {
+    task ->
+    if (task.name.startsWith('compile') && task.name.contains('MainC')) {
+        task.enabled = false
+    }
+    if (task.name.startsWith('link') && task.name.endsWith('SharedLibrary')) {
+        task.enabled = false
+    }
+    if (task.name.startsWith('strip') && task.name.endsWith('SharedLibrary')) {
+        task.enabled = false
+    }
+    if (task.name.startsWith('main') && task.name.endsWith('SharedLibrary')) {
+        task.dependsOn ndkBuild
+    }
+}

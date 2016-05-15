@@ -7,6 +7,6 @@ fi
 
 ./mkapk.bash debug || exit 1
 
-${ANDROID_SDK}/platform-tools/adb install -r bin/go-sdl2-example-debug.apk
+${ANDROID_SDK}/platform-tools/adb install -r build/go-sdl2-example-debug.apk
 
 ${ANDROID_SDK}/platform-tools/adb shell am start -a android.intent.action.MAIN -n com.example.android/.MainActivity

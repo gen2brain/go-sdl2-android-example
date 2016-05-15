@@ -35,7 +35,7 @@ ${ANDROID_NDK}/build/tools/make-standalone-toolchain.sh --platform=android-21 --
 
 echo "Download Go binaries"
 cd ${BUILD_DIR}/bootstrap && curl -s -L http://golang.org/dl/go${GO_BOOTSTRAP}.${OS}-${ARCH}.tar.gz | tar xz
-echo "Download Go source"
+echo "Clone Go source"
 cd ${BUILD_DIR} && git clone https://github.com/golang/go.git && cd ${BUILD_DIR}/go/src
 
 echo "Compile Go for host"

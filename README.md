@@ -19,7 +19,7 @@ To compile example you will need [Android NDK](https://developer.android.com/ndk
 
 Go toolchain must be cross compiled for android. There is a bootstrap script in android dir that you can use to compile toolchains and SDL2 for arm, arm64, x86 and x86_64.
 
-Make sure you have git, mercurial/hg, curl and ant installed.
+Make sure you have git, mercurial/hg and curl installed.
 
 Export paths to Android NDK and SDK:
 
@@ -48,9 +48,19 @@ And export paths to android toolchains, so scripts can find them:
     export ANDROID_TOOLCHAIN_X86=/usr/local/android-toolchain-x86
     export ANDROID_TOOLCHAIN_X86_64=/usr/local/android-toolchain-x86_64
 
-To build apk:
+To build apk with ant:
 
     cd android
-    ./mkapk.bash
+    ./mkapk-ant.bash
 
-If everything is successfully built apk can be found in android/bin directory.
+To build apk with gradle:
+
+    cd android
+    ./mkapk-gradle.bash
+
+If everything is successfully built apk can be found in android/build directory.
+
+You can also import project in Android Studio so you can use CPU monitor, debugger etc. but note that you have to rebuild Go library every time you make changes. You can rebuild like this:
+
+    cd android
+    ./mklib.bash arm arm64 x86 x86_64
