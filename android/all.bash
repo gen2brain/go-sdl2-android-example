@@ -5,7 +5,7 @@ if [ -z "$ANDROID_SDK" ]; then
   exit 1
 fi
 
-./mkapk.bash debug || exit 1
+./mkapk-ant.bash debug || exit 1
 
 ${ANDROID_SDK}/platform-tools/adb install -r build/go-sdl2-example-debug.apk
 
