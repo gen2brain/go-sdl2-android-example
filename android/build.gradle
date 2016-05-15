@@ -9,8 +9,9 @@ model {
             applicationId = 'com.example.android'
                 minSdkVersion.apiLevel = 10
                 targetSdkVersion.apiLevel = 23
-                versionCode 15
-                versionName "1.0.0"
+                versionCode 20
+                versionName "1.1"
+                setProperty("archivesBaseName", "go-sdl2-example-$versionName")
         }
 
         ndk {

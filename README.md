@@ -10,7 +10,7 @@ SDLActivity.java is used, same as with C/C++ and SDL2.
 Download APK
 ------------
 
-[go-sdl2-example-debug.apk](https://github.com/gen2brain/go-sdl2-android-example/releases/download/1.0/go-sdl2-example-debug.apk)
+[go-sdl2-example-1.1-debug.apk](https://github.com/gen2brain/go-sdl2-android-example/releases/download/1.1/go-sdl2-example-1.1-debug.apk)
 
 Compile
 -------
