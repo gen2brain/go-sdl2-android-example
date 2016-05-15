@@ -26,7 +26,7 @@ if [ ! -d "jni/SDL2" ]; then
     ./clone.bash
 fi
 
-./mklib.bash arm arm64 x86 x86_64 || exit 1
+./mklib.bash arm arm7 arm64 x86 x86_64 || exit 1
 
 if [ $1 == "release" ]; then
     ${ANDROID_NDK}/ndk-build V=1 -j$(nproc) && ant clean release

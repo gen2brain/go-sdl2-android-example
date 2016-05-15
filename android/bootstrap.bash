@@ -23,12 +23,13 @@ else
 fi
 
 INSTALL_PREFIX="$1"
-export PATH=${INSTALL_PREFIX}/android-toolchain-arm/bin:${INSTALL_PREFIX}/android-toolchain-arm64/bin:${INSTALL_PREFIX}/android-toolchain-x86/bin:${INSTALL_PREFIX}/android-toolchain-x86_64/bin:${PATH}
+export PATH=${INSTALL_PREFIX}/android-toolchain-arm/bin:${INSTALL_PREFIX}/android-toolchain-arm7/bin:${INSTALL_PREFIX}/android-toolchain-arm64/bin:${INSTALL_PREFIX}/android-toolchain-x86/bin:${INSTALL_PREFIX}/android-toolchain-x86_64/bin:${PATH}
 
 mkdir -p ${BUILD_DIR}/bootstrap
 
 echo "Install android toolchains"
 ${ANDROID_NDK}/build/tools/make-standalone-toolchain.sh --platform=android-9 --install-dir=${INSTALL_PREFIX}/android-toolchain-arm --toolchain=arm-linux-androideabi-4.9 --use-llvm
+${ANDROID_NDK}/build/tools/make-standalone-toolchain.sh --platform=android-9 --install-dir=${INSTALL_PREFIX}/android-toolchain-arm7 --toolchain=arm-linux-androideabi-4.9 --use-llvm
 ${ANDROID_NDK}/build/tools/make-standalone-toolchain.sh --platform=android-21 --install-dir=${INSTALL_PREFIX}/android-toolchain-arm64 --toolchain=aarch64-linux-android-4.9 --use-llvm
 ${ANDROID_NDK}/build/tools/make-standalone-toolchain.sh --platform=android-9 --install-dir=${INSTALL_PREFIX}/android-toolchain-x86 --toolchain=x86-4.9 --use-llvm
 ${ANDROID_NDK}/build/tools/make-standalone-toolchain.sh --platform=android-21 --install-dir=${INSTALL_PREFIX}/android-toolchain-x86_64 --toolchain=x86_64-4.9 --use-llvm
@@ -42,7 +43,9 @@ echo "Compile Go for host"
 GOROOT_BOOTSTRAP=${BUILD_DIR}/bootstrap/go ./make.bash || exit 1
 
 echo "Compile Go for arm-linux-androideabi"
-GOROOT_BOOTSTRAP=${BUILD_DIR}/bootstrap/go CC=arm-linux-androideabi-${MYCC} CC_FOR_TARGET=arm-linux-androideabi-${MYCC} GOOS=android GOARCH=arm CGO_ENABLED=1 ./make.bash --no-clean || exit 1
+GOROOT_BOOTSTRAP=${BUILD_DIR}/bootstrap/go CC=arm-linux-androideabi-${MYCC} CC_FOR_TARGET=arm-linux-androideabi-${MYCC} GOOS=android GOARCH=arm GOARM=6 CGO_ENABLED=1 ./make.bash --no-clean || exit 1
+echo "Compile Go for arm-linux-androideabi 7"
+GOROOT_BOOTSTRAP=${BUILD_DIR}/bootstrap/go CC=arm-linux-androideabi-${MYCC} CC_FOR_TARGET=arm-linux-androideabi-${MYCC} GOOS=android GOARCH=arm GOARM=7 CGO_ENABLED=1 ./make.bash --no-clean || exit 1
 echo "Compile Go for aarch64-linux-android"
 GOROOT_BOOTSTRAP=${BUILD_DIR}/bootstrap/go CC=aarch64-linux-android-${MYCC} CC_FOR_TARGET=aarch64-linux-android-${MYCC} GOOS=android GOARCH=arm64 CGO_ENABLED=1 ./make.bash --no-clean || exit 1
 echo "Compile Go for i686-linux-android"
@@ -64,7 +67,7 @@ done
 
 # Create make files
 echo "include \$(call all-subdir-makefiles)" > ${BUILD_DIR}/jni/Android.mk
-echo "APP_ABI := armeabi-v7a arm64-v8a x86 x86_64" > ${BUILD_DIR}/jni/Application.mk
+echo "APP_ABI := armeabi armeabi-v7a arm64-v8a x86 x86_64" > ${BUILD_DIR}/jni/Application.mk
 echo "APP_PLATFORM := android-10" >> ${BUILD_DIR}/jni/Application.mk
 
 if [ -n "$USE_LLVM" ]; then
@@ -82,13 +85,19 @@ sed -i '/^SUPPORT_JPG ?= true/c\SUPPORT_JPG ?= false' ${BUILD_DIR}/jni/SDL_image
 cd ${BUILD_DIR}/jni && ${ANDROID_NDK}/ndk-build V=1 || exit 1
 
 # Install libs and headers
-mkdir -p ${INSTALL_PREFIX}/android-toolchain-{arm,arm64,x86,x86_64}/include/SDL2
+mkdir -p ${INSTALL_PREFIX}/android-toolchain-{arm,arm7,arm64,x86,x86_64}/include/SDL2
 
-cp -f ${BUILD_DIR}/libs/armeabi-v7a/* ${INSTALL_PREFIX}/android-toolchain-arm/lib/
+cp -f ${BUILD_DIR}/libs/armeabi/* ${INSTALL_PREFIX}/android-toolchain-arm/lib/
 cp -f ${BUILD_DIR}/jni/SDL/include/* ${INSTALL_PREFIX}/android-toolchain-arm/include/SDL2/
 cp -f ${BUILD_DIR}/jni/SDL_image/SDL_image.h ${INSTALL_PREFIX}/android-toolchain-arm/include/SDL2/
 cp -f ${BUILD_DIR}/jni/SDL_mixer/SDL_mixer.h ${INSTALL_PREFIX}/android-toolchain-arm/include/SDL2/
 cp -f ${BUILD_DIR}/jni/SDL_ttf/SDL_ttf.h ${INSTALL_PREFIX}/android-toolchain-arm/include/SDL2/
+
+cp -f ${BUILD_DIR}/libs/armeabi-v7a/* ${INSTALL_PREFIX}/android-toolchain-arm7/lib/
+cp -f ${BUILD_DIR}/jni/SDL/include/* ${INSTALL_PREFIX}/android-toolchain-arm7/include/SDL2/
+cp -f ${BUILD_DIR}/jni/SDL_image/SDL_image.h ${INSTALL_PREFIX}/android-toolchain-arm7/include/SDL2/
+cp -f ${BUILD_DIR}/jni/SDL_mixer/SDL_mixer.h ${INSTALL_PREFIX}/android-toolchain-arm7/include/SDL2/
+cp -f ${BUILD_DIR}/jni/SDL_ttf/SDL_ttf.h ${INSTALL_PREFIX}/android-toolchain-arm7/include/SDL2/
 
 cp -f ${BUILD_DIR}/libs/arm64-v8a/* ${INSTALL_PREFIX}/android-toolchain-arm64/lib/
 cp -f ${BUILD_DIR}/jni/SDL/include/* ${INSTALL_PREFIX}/android-toolchain-arm64/include/SDL2/
@@ -109,9 +118,25 @@ cp -f ${BUILD_DIR}/jni/SDL_mixer/SDL_mixer.h ${INSTALL_PREFIX}/android-toolchain
 cp -f ${BUILD_DIR}/jni/SDL_ttf/SDL_ttf.h ${INSTALL_PREFIX}/android-toolchain-x86_64/include/SDL2/
 
 # Install SDL2 pkg-config file
-mkdir -p ${INSTALL_PREFIX}/android-toolchain-{arm,arm64,x86,x86_64}/lib/pkgconfig
+mkdir -p ${INSTALL_PREFIX}/android-toolchain-{arm,arm7,arm64,x86,x86_64}/lib/pkgconfig
 
 cat << EOF > ${INSTALL_PREFIX}/android-toolchain-arm/lib/pkgconfig/sdl2.pc
+prefix=${INSTALL_PREFIX}/android-toolchain-arm
+exec_prefix=\${prefix}
+libdir=\${prefix}/lib
+includedir=\${prefix}/include
+
+Name: sdl2
+Description: Simple DirectMedia Layer is a cross-platform multimedia library designed to provide low level access to audio, keyboard, mouse, joystick, 3D hardware via OpenGL, and 2D video framebuffer.
+Version: 2.0.4
+Requires:
+Conflicts:
+Libs: -L\${libdir}  -lSDL2
+Libs.private: -lSDL2  -Wl,--no-undefined -lm -ldl -lrt
+Cflags: -I\${includedir}/SDL2 -D_REENTRANT
+EOF
+
+cat << EOF > ${INSTALL_PREFIX}/android-toolchain-arm7/lib/pkgconfig/sdl2.pc
 prefix=${INSTALL_PREFIX}/android-toolchain-arm
 exec_prefix=\${prefix}
 libdir=\${prefix}/lib
