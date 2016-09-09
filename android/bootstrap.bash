@@ -35,9 +35,10 @@ ${ANDROID_NDK}/build/tools/make-standalone-toolchain.sh --platform=android-9 --i
 ${ANDROID_NDK}/build/tools/make-standalone-toolchain.sh --platform=android-21 --install-dir=${INSTALL_PREFIX}/android-toolchain-x86_64 --toolchain=x86_64-4.9 --use-llvm
 
 echo "Download Go binaries"
-cd ${BUILD_DIR}/bootstrap && curl -s -L http://golang.org/dl/go${GO_BOOTSTRAP}.${OS}-${ARCH}.tar.gz | tar xz
-echo "Clone Go source"
-cd ${BUILD_DIR} && git clone https://github.com/golang/go.git && cd ${BUILD_DIR}/go/src
+cd ${BUILD_DIR}/bootstrap && curl -s -L http://storage.googleapis.com/golang/go${GO_BOOTSTRAP}.${OS}-${ARCH}.tar.gz | tar xz
+echo "Download Go source"
+#cd ${BUILD_DIR} && git clone https://github.com/golang/go.git && cd ${BUILD_DIR}/go/src
+cd ${BUILD_DIR} && curl -s -L http://storage.googleapis.com/golang/go${GO_BOOTSTRAP}.src.tar.gz | tar xz && cd ${BUILD_DIR}/go/src
 
 echo "Compile Go for host"
 GOROOT_BOOTSTRAP=${BUILD_DIR}/bootstrap/go ./make.bash || exit 1
