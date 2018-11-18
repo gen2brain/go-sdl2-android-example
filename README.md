@@ -1,6 +1,8 @@
 Go-SDL2 Android Example
 =======================
 
+Deprecated by https://github.com/veandco/go-sdl2-examples/tree/master/examples/android !
+
 [Go-SDL2](https://github.com/veandco/go-sdl2) example running on Android.
 
 Golang example is compiled to C shared library and then linked with the help of Android.mk files from SDL2.
