@@ -2,6 +2,7 @@ Go-SDL2 Android Example
 =======================
 
 Deprecated by https://github.com/veandco/go-sdl2-examples/tree/master/examples/android !
+----------------------------------------------------------------------------------------
 
 [Go-SDL2](https://github.com/veandco/go-sdl2) example running on Android.
 
